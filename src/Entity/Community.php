@@ -4,13 +4,24 @@ namespace Task\GetOnBoard\Entity;
 
 class Community
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var array
+     */
     public $posts = [];
 
     public function __construct()
     {
-        $this->id =  uniqid();
+        $this->id = uniqid();
     }
 
     /**
@@ -30,13 +41,13 @@ class Community
     }
 
     /**
-     * @param $title
-     * @param $text
-     * @param $type
-     * @param null $parent
+     * @param string $title
+     * @param string $text
+     * @param string $type
+     * @param Post|null $parent
      * @return Post|null
      */
-    public function addPost($title, $text, $type, $parent = null)
+    public function addPost(string $title, string $text, string $type, Post $parent = null): ?Post
     {
         $post = null;
 
@@ -74,20 +85,13 @@ class Community
     }
 
     /**
-     * @param $id
-     * @param $title
-     * @param $text
-     * @return mixed|null
+     * @param Post $post
+     * @param string $title
+     * @param string $text
+     * @return Post|null
      */
-    public function updatePost($id, $title, $text)
+    public function updatePost(Post $post, string $title, string $text): Post
     {
-        $post = null;
-        foreach ($this->posts as $post) {
-            if ($post->id == $id) {
-                break;
-            }
-        }
-
         $post->setTitle($title);
         $post->setText($text);
 
@@ -97,46 +101,41 @@ class Community
     }
 
     /**
-     * @param $id
-     * @param $text
-     * @return null
+     * @param Post $parentPost
+     * @param string $text
+     * @return Comment|null
      */
-    public function addComment($parentId, $text)
+    public function addComment(Post $parentPost, string $text): ?Comment
     {
-        $post = null;
         foreach ($this->posts as $post) {
-            if ($post->id == $parentId) {
-                break;
+            if ($post->getId() == $parentPost->getId()) {
+                return $post->addComment($text);
             }
         }
 
-
-        $comment = $post->addComment($text);
-
-        return $comment;
+        return null;
     }
 
     /**
-     * @param $id
+     * @param Post $deletingPost
      */
-    public function deletePost($id)
+    public function deletePost(Post $deletingPost)
     {
-        $post = null;
         foreach ($this->posts as $post) {
-            if ($post->id == $id) {
+            if ($post->getId() == $deletingPost->getId()) {
+                $post->setDeleted(true);
                 break;
             }
         }
-
-        $post->setDeleted(true);
     }
 
     /**
      * @return array
      */
-    public function getPosts()
+    public function getPosts(): array
     {
         $posts = [];
+
         foreach ($this->posts as $post){
             if (!$post->getDeleted()) {
                 $posts[] = $post;
@@ -147,18 +146,15 @@ class Community
     }
 
     /**
-     * @param $articleId
-     * return void
+     * @param Post $article
      */
-    public function disableCommentsForArticle($articleId): void
+    public function disableCommentsForArticle(Post $article): void
     {
-        $post = null;
         foreach ($this->posts as $post) {
-            if ($post->id == $articleId) {
+            if ($post->getId() == $article->getId()) {
+                $post->setCommentsAllowed(false);
                 break;
             }
         }
-
-        $post->setCommentsAllowed(false);
     }
 }

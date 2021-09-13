@@ -4,10 +4,29 @@ namespace Task\GetOnBoard\Entity;
 
 class User
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $username;
+
+    /**
+     * @var array
+     */
     public $posts;
+
+    /**
+     * @var array
+     */
     public $roles;
+
+    /**
+     * @var array
+     */
     public $comments;
 
     public function __construct()
@@ -33,17 +52,17 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
      */
-    public function setUsername($username): void
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
@@ -57,41 +76,41 @@ class User
     }
 
     /**
-     * @param $post
+     * @param Post $post
      */
-    public function addPost($post): void
+    public function addPost(Post $post): void
     {
         $this->posts[] = $post;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
     /**
-     * @param mixed $roles
+     * @param array $roles
      */
-    public function setRoles($roles): void
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getComments()
+    public function getComments(): array
     {
         return $this->comments;
     }
 
     /**
-     * @param mixed $comments
+     * @param Comment $comment
      */
-    public function addComment($comment): void
+    public function addComment(Comment $comment): void
     {
         $this->comments[] = $comment;
     }

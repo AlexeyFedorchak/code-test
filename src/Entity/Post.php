@@ -4,13 +4,44 @@ namespace Task\GetOnBoard\Entity;
 
 class Post
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $title;
+
+    /**
+     * @var string
+     */
     public $text;
+
+    /**
+     * @var string
+     */
     public $type;
+
+    /**
+     * @var Post
+     */
     public $parent;
+
+    /**
+     * @var array
+     */
     public $comments;
+
+    /**
+     * @var bool
+     */
     public $deleted;
+
+    /**
+     * @var bool
+     */
     public $commentsAllowed = true;
 
     /**
@@ -25,80 +56,80 @@ class Post
     /**
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param $title
+     * @param string $title
      */
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
     /**
-     * @param $text
+     * @param string $text
      */
-    public function setText($text): void
+    public function setText(string $text): void
     {
         $this->text = $text;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * @param $type
+     * @param string $type
      */
-    public function setType($type): void
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return mixed
+     * @return Post
      */
-    public function getParent()
+    public function getParent(): Post
     {
         return $this->parent;
     }
 
     /**
-     * @param $parent
+     * @param Post $parent
      */
-    public function setParent($parent): void
+    public function setParent(Post $parent): void
     {
         $this->parent = $parent;
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @return Comment
      */
-    public function addComment($text)
+    public function addComment(string $text): Comment
     {
         $comment = new Comment();
         $comment->setText($text);
@@ -117,17 +148,17 @@ class Post
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getDeleted()
+    public function getDeleted(): bool
     {
         return $this->deleted;
     }
 
     /**
-     * @param mixed $deleted
+     * @param bool $deleted
      */
-    public function setDeleted($deleted): void
+    public function setDeleted(bool $deleted): void
     {
         $this->deleted = $deleted;
     }
@@ -141,9 +172,9 @@ class Post
     }
 
     /**
-     * @param mixed $commentsAllowed
+     * @param bool $commentsAllowed
      */
-    public function setCommentsAllowed($commentsAllowed)
+    public function setCommentsAllowed(bool $commentsAllowed)
     {
         if (!$commentsAllowed) {
             $this->comments = [];
