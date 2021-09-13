@@ -4,25 +4,38 @@ namespace Task\GetOnBoard\Entity;
 
 class Comment
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $text;
 
     public function __construct()
     {
-        $this->id =  uniqid();
+        $this->id = uniqid();
     }
 
-    public function getId()
+    /**
+     * @return string
+     */
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setText($text)
+    public function setText(string $text): void
     {
         $this->text = $text;
     }
 
-    public function getText()
+    /**
+     * @return string
+     */
+    public function getText(): string
     {
         return $this->text;
     }

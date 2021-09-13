@@ -4,13 +4,24 @@ namespace Task\GetOnBoard\Entity;
 
 class Community
 {
+    /**
+     * @var string
+     */
     public $id;
+
+    /**
+     * @var string
+     */
     public $name;
+
+    /**
+     * @var array
+     */
     public $posts = [];
 
     public function __construct()
     {
-        $this->id =  uniqid();
+        $this->id = uniqid();
     }
 
     /**
