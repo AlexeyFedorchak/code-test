@@ -74,20 +74,13 @@ class Community
     }
 
     /**
-     * @param $id
-     * @param $title
-     * @param $text
-     * @return mixed|null
+     * @param Post $post
+     * @param string $title
+     * @param string $text
+     * @return Post|null
      */
-    public function updatePost($id, $title, $text)
+    public function updatePost(Post $post, string $title, string $text): Post
     {
-        $post = null;
-        foreach ($this->posts as $post) {
-            if ($post->id == $id) {
-                break;
-            }
-        }
-
         $post->setTitle($title);
         $post->setText($text);
 
@@ -97,21 +90,19 @@ class Community
     }
 
     /**
-     * @param $id
-     * @param $text
+     * @param Post $parentPost
+     * @param string $text
      * @return Comment|null
      */
-    public function addComment($parentId, $text): Comment
+    public function addComment(Post $parentPost, string $text): ?Comment
     {
-        $post = null;
-
         foreach ($this->posts as $post) {
-            if ($post->id == $parentId) {
-                break;
+            if ($post->getId() == $parentPost->getId()) {
+                return $post->addComment($text);
             }
         }
 
-        return $post->addComment($text);
+        return null;
     }
 
     /**
@@ -145,18 +136,14 @@ class Community
     }
 
     /**
-     * @param $articleId
-     * return void
+     * @param Post $article
      */
-    public function disableCommentsForArticle($articleId): void
+    public function disableCommentsForArticle(Post $article): void
     {
-        $post = null;
         foreach ($this->posts as $post) {
-            if ($post->id == $articleId) {
-                break;
+            if ($post->getId() == $article->getId()) {
+                $post->setCommentsAllowed(false);
             }
         }
-
-        $post->setCommentsAllowed(false);
     }
 }

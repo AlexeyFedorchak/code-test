@@ -89,9 +89,9 @@ class User
     }
 
     /**
-     * @param mixed $comments
+     * @param Comment $comment
      */
-    public function addComment($comment): void
+    public function addComment(Comment $comment): void
     {
         $this->comments[] = $comment;
     }

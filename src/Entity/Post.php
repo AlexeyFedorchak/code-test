@@ -141,9 +141,9 @@ class Post
     }
 
     /**
-     * @param mixed $commentsAllowed
+     * @param bool $commentsAllowed
      */
-    public function setCommentsAllowed($commentsAllowed)
+    public function setCommentsAllowed(bool $commentsAllowed)
     {
         if (!$commentsAllowed) {
             $this->comments = [];

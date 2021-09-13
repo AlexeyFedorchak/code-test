@@ -3,113 +3,94 @@
 namespace Task\GetOnBoard\Controller;
 
 use Task\GetOnBoard\Entity\Comment;
+use Task\GetOnBoard\Entity\Community;
+use Task\GetOnBoard\Entity\User;
 use Task\GetOnBoard\Repository\CommunityRepository;
 use \Task\GetOnBoard\Entity\Post;
 
 class ArticleController
 {
     /**
-     * @param int $communityId
+     * @param Community $community
      * @return array
      */
-    public function listAction(int $communityId): array
+    public function listAction(Community $community): array
     {
-        $community = CommunityRepository::getCommunity($communityId);
-
         return $community->getPosts();
     }
 
     /**
-     * I assume that userId and communityId are integers, since usually by id we understand auto-incremented primary ids from database,
-     * but of course I'm familiar with a case when id can be a string, like some kind of uuid.
-     *
-     * @param int $userId
-     * @param int $communityId
+     * @param User $user
+     * @param Community $community
      * @param string $title
      * @param string $text
      * @return Post|null
      */
-    public function createAction(int $userId, int $communityId, string $title, string $text): Post
+    public function createAction(User $user, Community $community, string $title, string $text): Post
     {
-        $community = CommunityRepository::getCommunity($communityId);
         $post = $community->addPost($title, $text, 'article');
-
-        $user = CommunityRepository::getUser($userId);
         $user->addPost($post);
 
         return $post;
     }
 
     /**
-     * @param int $userId
-     * @param int $communityId
-     * @param int $articleId
+     * @param User $user
+     * @param Community $community
+     * @param Post $post
      * @param string $title
      * @param string $text
      * @return mixed|null
      */
-    public function updateAction(int $userId, int $communityId, int $articleId, string $title, string $text): ?Post
+    public function updateAction(User $user, Community $community, Post $post, string $title, string $text): ?Post
     {
-        $user = CommunityRepository::getUser($userId);
-
-        //post variable may not exist of "if" statement won't have true at least once
-        $post = null;
-
         foreach ($user->getPosts() as $userPost) {
-            if ($userPost->id == $articleId) {
-                $community = CommunityRepository::getCommunity($communityId);
-                $post = $community->updatePost($articleId, $title, $text);
+            if ($userPost->getId() == $post->getId()) {
+                return $community->updatePost($post, $title, $text);
             }
         }
 
-        return $post;
+        return null;
     }
 
     /**
      * I've removed return null, since no need to return it, it's better to return just void.
      * function by default anyway will have returned value "null"
      *
-     * @param $userId
-     * @param $communityId
-     * @param $articleId
+     * @param User $user
+     * @param Community $community
+     * @param Post $post
      */
-    public function deleteAction($userId, $communityId, $articleId): void
+    public function deleteAction(User $user, Community $community, Post $post): void
     {
-        $user = CommunityRepository::getUser($userId);
-
         foreach ($user->getPosts() as $userPost) {
-            if ($userPost->id == $articleId) {
-                $community = CommunityRepository::getCommunity($communityId);
-                $community->deletePost($articleId);
+            if ($userPost->getId() == $post->getId()) {
+                $community->deletePost($post);
             }
         }
     }
 
     /**
-     * @param $userId
-     * @param $communityId
-     * @param $articleId
-     * @param $text
+     * @param User $user
+     * @param Community $community
+     * @param Post $post
+     * @param string $text
      * @return Comment|null
      */
-    public function commentAction($userId, $communityId, $articleId, $text): ?Comment
+    public function commentAction(User $user, Community $community, Post $post, string $text): ?Comment
     {
-        $community = CommunityRepository::getCommunity($communityId);
-        $comment = $community->addComment($articleId, $text);
-
-        $user = CommunityRepository::getUser($userId);
+        $comment = $community->addComment($post, $text);
         $user->addComment($comment);
 
         return $comment;
     }
 
     /**
-     * @param int $communityId
-     * @param int $articleId
+     * @param Community $community
+     * @param Post $post
      */
-    public function disableCommentsAction(int $communityId, int $articleId): void
+    public function disableCommentsAction(Community $community, Post $post): void
     {
-        $community = CommunityRepository::getCommunity($communityId);
-        $community->disableCommentsForArticle($articleId);
+        $community->disableCommentsForArticle($post);
     }
 }
