@@ -2,6 +2,7 @@
 
 namespace Task\GetOnBoard\Controller;
 
+use Task\GetOnBoard\Entity\Comment;
 use Task\GetOnBoard\Repository\CommunityRepository;
 use \Task\GetOnBoard\Entity\Post;
 
@@ -89,9 +90,9 @@ class ArticleController
      * @param $communityId
      * @param $articleId
      * @param $text
-     * @return null
+     * @return Comment|null
      */
-    public function commentAction($userId, $communityId, $articleId, $text)
+    public function commentAction($userId, $communityId, $articleId, $text): ?Comment
     {
         $community = CommunityRepository::getCommunity($communityId);
         $comment = $community->addComment($articleId, $text);
@@ -103,12 +104,10 @@ class ArticleController
     }
 
     /**
-     * @param $communityId
-     * @param $articleId
-     *
-     * PATCH
+     * @param int $communityId
+     * @param int $articleId
      */
-    public function disableCommentsAction($communityId, $articleId)
+    public function disableCommentsAction(int $communityId, int $articleId): void
     {
         $community = CommunityRepository::getCommunity($communityId);
         $community->disableCommentsForArticle($articleId);

@@ -3,34 +3,30 @@
 namespace Task\GetOnBoard\Controller;
 
 use Task\GetOnBoard\Repository\CommunityRepository;
+use Task\GetOnBoard\Entity\Post;
+use Task\GetOnBoard\Entity\Comment;
 
 class QuestionController
 {
     /**
-     * @param $communityId
+     * @param int $communityId
      * @return array
-     *
-     * POST
      */
-    public function listAction($communityId)
+    public function listAction(int $communityId): array
     {
         $community = CommunityRepository::getCommunity($communityId);
-        $posts = $community->getPosts();
 
-        return $posts;
+        return $community->getPosts();
     }
 
     /**
-     * @param $communityId
-     * @param $title
-     * @param $text
-     *
-     * @return
-     *
-     * POST
-     *
+     * @param int $userId
+     * @param int $communityId
+     * @param int $title
+     * @param string $text
+     * @return Post|null
      */
-    public function createAction($userId, $communityId, $title, $text)
+    public function createAction(int $userId, int $communityId, string $title, string $text): Post
     {
         $community = CommunityRepository::getCommunity($communityId);
         $post = $community->addPost($title, $text, 'question');
@@ -42,18 +38,20 @@ class QuestionController
     }
 
     /**
-     * @param $communityId
-     * @param $title
-     * @param $text
-     *
-     * @return mixed
-     *
-     * PUT
-     *
+     * @param int $userId
+     * @param int $communityId
+     * @param int $questionId
+     * @param string $title
+     * @param string $text
+     * @return Post|null
      */
-    public function updateAction($userId, $communityId, $questionId, $title, $text)
+    public function updateAction(int $userId, int $communityId, int $questionId, string $title, string $text): ?Post
     {
         $user = CommunityRepository::getUser($userId);
+
+        //set default value for $post variable
+        $post = null;
+
         foreach ($user->getPosts() as $userPost) {
             if ($userPost->id == $questionId) {
                 $community = CommunityRepository::getCommunity($communityId);
@@ -65,15 +63,11 @@ class QuestionController
     }
 
     /**
-     * @param $communityId
-     * @param $title
-     * @param $text
-     *
-     * @return null
-     *
-     * DELETE
+     * @param int $userId
+     * @param int $communityId
+     * @param int $questionId
      */
-    public function deleteAction($userId, $communityId, $questionId)
+    public function deleteAction(int $userId, int $communityId, int $questionId): void
     {
         $user = CommunityRepository::getUser($userId);
         foreach ($user->getPosts() as $userPost) {
@@ -82,19 +76,16 @@ class QuestionController
                 $community->deletePost($questionId);
             }
         }
-
-        return null;
     }
 
     /**
+     * @param $userId
      * @param $communityId
-     * @param $title
+     * @param $questionId
      * @param $text
-     * @return mixed
-     *
-     * POST
+     * @return Comment|null
      */
-    public function commentAction($userId, $communityId, $questionId, $text)
+    public function commentAction($userId, $communityId, $questionId, $text): ?Comment
     {
         $community = CommunityRepository::getCommunity($communityId);
         $comment = $community->addComment($questionId, $text);

@@ -99,21 +99,19 @@ class Community
     /**
      * @param $id
      * @param $text
-     * @return null
+     * @return Comment|null
      */
-    public function addComment($parentId, $text)
+    public function addComment($parentId, $text): Comment
     {
         $post = null;
+
         foreach ($this->posts as $post) {
             if ($post->id == $parentId) {
                 break;
             }
         }
 
-
-        $comment = $post->addComment($text);
-
-        return $comment;
+        return $post->addComment($text);
     }
 
     /**
