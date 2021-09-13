@@ -62,6 +62,7 @@ class ArticleController
         foreach ($user->getPosts() as $userPost) {
             if ($userPost->getId() == $post->getId()) {
                 $community->deletePost($post);
+                break;
             }
         }
     }

@@ -30,13 +30,13 @@ class Community
     }
 
     /**
-     * @param $title
-     * @param $text
-     * @param $type
-     * @param null $parent
+     * @param string $title
+     * @param string $text
+     * @param string $type
+     * @param Post|null $parent
      * @return Post|null
      */
-    public function addPost($title, $text, $type, $parent = null)
+    public function addPost(string $title, string $text, string $type, Post $parent = null): ?Post
     {
         $post = null;
 
