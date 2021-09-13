@@ -106,26 +106,25 @@ class Community
     }
 
     /**
-     * @param $id
+     * @param Post $deletingPost
      */
-    public function deletePost($id)
+    public function deletePost(Post $deletingPost)
     {
-        $post = null;
         foreach ($this->posts as $post) {
-            if ($post->id == $id) {
+            if ($post->getId() == $deletingPost->getId()) {
+                $post->setDeleted(true);
                 break;
             }
         }
-
-        $post->setDeleted(true);
     }
 
     /**
      * @return array
      */
-    public function getPosts()
+    public function getPosts(): array
     {
         $posts = [];
+
         foreach ($this->posts as $post){
             if (!$post->getDeleted()) {
                 $posts[] = $post;
@@ -143,6 +142,7 @@ class Community
         foreach ($this->posts as $post) {
             if ($post->getId() == $article->getId()) {
                 $post->setCommentsAllowed(false);
+                break;
             }
         }
     }

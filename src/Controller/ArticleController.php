@@ -5,7 +5,6 @@ namespace Task\GetOnBoard\Controller;
 use Task\GetOnBoard\Entity\Comment;
 use Task\GetOnBoard\Entity\Community;
 use Task\GetOnBoard\Entity\User;
-use Task\GetOnBoard\Repository\CommunityRepository;
 use \Task\GetOnBoard\Entity\Post;
 
 class ArticleController
@@ -54,9 +53,6 @@ class ArticleController
     }
 
     /**
-     * I've removed return null, since no need to return it, it's better to return just void.
-     * function by default anyway will have returned value "null"
-     *
      * @param User $user
      * @param Community $community
      * @param Post $post

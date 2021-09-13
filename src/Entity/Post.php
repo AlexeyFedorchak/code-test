@@ -125,9 +125,9 @@ class Post
     }
 
     /**
-     * @param mixed $deleted
+     * @param bool $deleted
      */
-    public function setDeleted($deleted): void
+    public function setDeleted(bool $deleted): void
     {
         $this->deleted = $deleted;
     }
