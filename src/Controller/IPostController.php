@@ -7,6 +7,15 @@ use Task\GetOnBoard\Entity\Community;
 use Task\GetOnBoard\Entity\Post;
 use Task\GetOnBoard\Entity\User;
 
+/**
+ *
+ * This would keep some standarts in terms of making methods for post controllers.
+ *
+ * Also, that makes code more flexible, since if you some new type of post will be created,
+ * then we just need to create a new controller which extends PostController and implements IPostController.
+ * The one thing which needs to be specified is only type.
+ *
+ */
 interface IPostController
 {
     public function listAction(Community $community): array;

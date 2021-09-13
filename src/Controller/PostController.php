@@ -7,6 +7,14 @@ use Task\GetOnBoard\Entity\Community;
 use Task\GetOnBoard\Entity\Post;
 use Task\GetOnBoard\Entity\User;
 
+/**
+ * This class is made abstract to avoid possiblity of making instance of this class in custom code.
+ * This class is made only for keeping general code part for post controllers, so just avoiding code duplicating,
+ * it cannot be used in custom code.
+ *
+ * to make new post controller, just make new controller and extend it with PostController.
+ * Also, please don't forge to implement IPostController interface.
+ */
 abstract class PostController implements IPostController
 {
     /**
