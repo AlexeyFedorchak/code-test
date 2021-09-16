@@ -10,4 +10,15 @@ class PostTypes
     const ARTICLE = 'article';
     const CONVERSATION = 'conversation';
     const QUESTION = 'question';
+
+    /**
+     * list supported post types
+     *
+     * @return array
+     */
+    public static function types(): array
+    {
+        return (new \ReflectionClass(__CLASS__))
+            ->getConstants();
+    }
 }
