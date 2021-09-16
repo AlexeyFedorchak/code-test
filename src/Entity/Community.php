@@ -2,6 +2,8 @@
 
 namespace Task\GetOnBoard\Entity;
 
+use Task\GetOnBoard\Constants\PostTypes;
+
 class Community
 {
     /**
@@ -47,18 +49,18 @@ class Community
      * @param Post|null $parent
      * @return Post|null
      */
-    public function addPost(string $title, string $text, string $type, Post $parent = null): ?Post
+    public function addPost(string $title, string $text, string $type, ?Post $parent = null): ?Post
     {
         $post = null;
 
-        if ($type == 'article') {
+        if ($type == PostTypes::ARTICLE) {
             $post = new Post();
             $post->setTitle($title);
             $post->setText($text);
             $post->setType($type);
         }
 
-        if ($type == 'conversation') {
+        if ($type == PostTypes::CONVERSATION) {
             $post = new Post();
             $post->setText($text);
             $post->setType($type);
@@ -68,7 +70,7 @@ class Community
             }
         }
 
-        if ($type == 'question') {
+        if ($type == PostTypes::QUESTION) {
             $post = new Post();
             $post->setTitle($title);
             $post->setText($text);
@@ -79,7 +81,9 @@ class Community
             }
         }
 
-        $this->posts[] = $post;
+        if ($post) {
+            $this->posts[] = $post;
+        }
 
         return $post;
     }
