@@ -3,6 +3,9 @@
 namespace Task\GetOnBoard\Entity;
 
 use Task\GetOnBoard\Constants\PostTypes;
+use Task\GetOnBoard\Entity\Posts\IPost;
+use Task\GetOnBoard\Entity\Posts\Post;
+use Task\GetOnBoard\Factories\Posts\IPostFactory;
 
 class Community
 {
@@ -21,9 +24,15 @@ class Community
      */
     public $posts = [];
 
-    public function __construct()
+    /**
+     * @var IPostFactory
+     */
+    protected $postFactory;
+
+    public function __construct(IPostFactory $postFactory)
     {
         $this->id = uniqid();
+        $this->postFactory = $postFactory;
     }
 
     /**
@@ -47,43 +56,14 @@ class Community
      * @param string $text
      * @param string $type
      * @param Post|null $parent
-     * @return Post|null
+     * @return IPost
      */
-    public function addPost(string $title, string $text, string $type, ?Post $parent = null): ?Post
+    public function addPost(string $title, string $text, string $type, ?Post $parent = null): IPost
     {
-        $post = null;
+        $post = $this->postFactory->make($type);
+        $post->create($title, $text, $type, $parent);
 
-        if ($type == PostTypes::ARTICLE) {
-            $post = new Post();
-            $post->setTitle($title);
-            $post->setText($text);
-            $post->setType($type);
-        }
-
-        if ($type == PostTypes::CONVERSATION) {
-            $post = new Post();
-            $post->setText($text);
-            $post->setType($type);
-
-            if ($parent) {
-                $post->setParent($parent);
-            }
-        }
-
-        if ($type == PostTypes::QUESTION) {
-            $post = new Post();
-            $post->setTitle($title);
-            $post->setText($text);
-            $post->setType($type);
-
-            if ($parent) {
-                $post->setParent($parent);
-            }
-        }
-
-        if ($post) {
-            $this->posts[] = $post;
-        }
+        $this->posts[] = $post;
 
         return $post;
     }

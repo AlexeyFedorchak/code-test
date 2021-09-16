@@ -1,8 +1,10 @@
 <?php
 
-namespace Task\GetOnBoard\Entity;
+namespace Task\GetOnBoard\Entity\Posts;
 
-class Post
+use Task\GetOnBoard\Entity\Comment;
+
+abstract class Post
 {
     /**
      * @var string
